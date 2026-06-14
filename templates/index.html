@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Graph Builder AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="[https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap](https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap)" rel="stylesheet">
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="logo">
+                <h2>Graph<span class="highlight">AI</span></h2>
+            </div>
+            <div class="history-section">
+                <h3>Recent Analyses</h3>
+                <ul id="history-list">
+                    {% for item in history %}
+                        <li class="history-item">
+                            <span class="history-id">#{{ item.id }}</span>
+                            <p>{{ item.snippet }}</p>
+                        </li>
+                    {% else %}
+                        <li class="no-history">No recent history</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <section class="hero">
+                <h1>Build Knowledge Graphs from <span class="highlight">Text</span></h1>
+                <p>Powered by Google Gemini 2.5 Flash. Extract entities, trace relationships, and visualize complex networks instantly.</p>
+            </section>
+
+            <section class="input-card card">
+                <div class="card-header">
+                    <h2>Analyze Text</h2>
+                    <button id="sample-btn" class="btn btn-secondary">Load Sample</button>
+                </div>
+                <textarea id="text-input" placeholder="Enter your unstructured text here..." rows="5"></textarea>
+                <div class="action-bar">
+                    <button id="analyze-btn" class="btn btn-primary">Generate Graph</button>
+                    <div id="loading" class="hidden">
+                        <div class="spinner"></div>
+                        <span>Processing with AI...</span>
+                    </div>
+                </div>
+                <div id="error-message" class="error hidden"></div>
+            </section>
+
+            <div id="results-container" class="hidden">
+                
+                <section class="stats-panel">
+                    <div class="stat-box">
+                        <h4>Total Entities</h4>
+                        <span id="stat-entities" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-box">
+                        <h4>Relationships</h4>
+                        <span id="stat-relations" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-box">
+                        <h4>Unique Types</h4>
+                        <span id="stat-types" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-box">
+                        <h4>Graph Density</h4>
+                        <span id="stat-density" class="stat-value">0.0</span>
+                    </div>
+                </section>
+
+                <section class="viz-card card">
+                    <div class="card-header">
+                        <h2>Interactive Knowledge Graph</h2>
+                        <div class="export-actions">
+                            <a id="btn-download-png" class="btn btn-outline" href="#" download>Download PNG</a>
+                            <a id="btn-download-csv" class="btn btn-outline" href="#" download>Download CSV</a>
+                        </div>
+                    </div>
+                    <div class="iframe-container">
+                        <iframe id="graph-iframe" src="" frameborder="0"></iframe>
+                    </div>
+                </section>
+
+                <div class="tables-grid">
+                    <section class="table-card card">
+                        <h2>Extracted Entities</h2>
+                        <div class="table-wrapper">
+                            <table id="entities-table">
+                                <thead>
+                                    <tr>
+                                        <th>Entity Name</th>
+                                        <th>Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <section class="table-card card">
+                        <h2>Relationships</h2>
+                        <div class="table-wrapper">
+                            <table id="relationships-table">
+                                <thead>
+                                    <tr>
+                                        <th>Source</th>
+                                        <th>Relation</th>
+                                        <th>Target</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <footer>
+                <p>&copy; 2026 Knowledge Graph Builder | Powered by Gemini & PyVis</p>
+            </footer>
+        </main>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
